@@ -1,0 +1,26 @@
+import random
+from scrip.spatial import distance
+def khoangcach(a,b):
+	return distance.euclidean(a,b) #tính khoảng cách không gian từ a,b
+
+class cappyKnn():
+	def fit(self, x_train,y_train): # học
+		self.x_train = x_train
+		self.y_train = y_train
+
+	def predict(self, x_test): # dự đoán
+		prediction = []
+		for row in x_test:
+			label = self.closest(row)
+			prediction.append(label)
+		return prediction
+	
+	def closest(self,row): # tìm điểm gần nhất
+		best_dict = khoangcach(row,self.x_train[0]) #điểm mở đầu
+		best_index = 0 # vị trí điểm trong danh sách
+		for i in range(1,len(self.x_train)):
+			dist = khoangcach(row, self.x_train[i]) # duyệt từng điểm trong danh sách
+			if dist < best_dict:  # so sánh lấy điểm gần nhất 
+				best_dict = dist
+				best_index = i
+		return self.y_train[best_index] # trả về vị trí
